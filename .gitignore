@@ -4,3 +4,9 @@ __pycache__/
 node_modules/
 .venv/
 storage/
+.pytest_cache/
+.ruff_cache/
+.svelte-kit/
+build/
+dist/
+*.egg-info/

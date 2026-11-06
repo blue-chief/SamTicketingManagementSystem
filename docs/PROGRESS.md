@@ -4,7 +4,7 @@ Working order is the dependency order, not the dev split. Tick a task only when 
 Task details: docs/tasks/D1-..., D2-..., D3-... (task IDs below match those files).
 
 ## Phase 1: Foundation
-- [ ] D1-01 Repo scaffold, Compose, CI
+- [x] D1-01 Repo scaffold, Compose, CI
 - [ ] D1-02 Schema and migrations
 - [ ] D1-03 Seed data
 - [ ] D1-04 Auth and RBAC
@@ -78,3 +78,16 @@ Template:
 - Assumptions made:
 - Spec questions or ambiguities:
 - How to run/test it:
+
+### D1-01 · 2026-11-06
+- Built: Project skeleton including Section 18 folder structure, FastAPI app factory with CORS, structured JSON logging without message bodies/PII, pydantic-settings Settings class covering all Appendix B variables, async SQLAlchemy session factory, GET /health endpoint (checking DB, Redis, IMAP poll timestamp, queue depth), ARQ worker entrypoint with 30s cron heartbeat (status:worker_heartbeat), minimal SvelteKit + TypeScript frontend with adapter-node, Docker Compose with 5 services (postgres, redis, api, worker, frontend), dev compose, prod compose override, Caddyfile placeholder, safe .env.example, tooling configs (ruff, pytest with async client fixture), and GitHub Actions CI workflow (ruff, pytest, svelte-check, docker-compose build).
+- Files/areas touched: backend/app/{api,core,db,models,schemas,services,pipeline,ai,notifications,workers}, backend/{alembic,tests,scripts}, frontend, deploy, .github/workflows/ci.yml, Makefile, pyproject.toml, .gitignore.
+- Stubbed (marked STUB in code): None.
+- Assumptions made: Node 22 used for SvelteKit 3 (`Promise.withResolvers`); `JWT_SECRET` has safe dev default in Settings with `CHANGE_ME_IN_PRODUCTION` in `.env.example`; dev Compose does not run Caddy (staging/prod per spec).
+- Spec questions or ambiguities: None.
+- How to run/test it:
+  - Compose: `docker compose -f deploy/docker-compose.yml up --build -d`
+  - Health check: `curl http://localhost:8000/health` or `Invoke-RestMethod http://localhost:8000/health`
+  - Pytest: `python -m pytest -v`
+  - Ruff: `ruff check backend/ && ruff format --check backend/`
+  - Svelte check: `cd frontend && npx svelte-check --threshold warning`

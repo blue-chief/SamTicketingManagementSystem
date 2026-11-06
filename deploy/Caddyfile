@@ -1,0 +1,7 @@
+# Placeholder – Caddy reverse proxy for staging/production.
+# Not used in development docker-compose.
+
+:443 {
+    reverse_proxy /api/* api:8000
+    reverse_proxy /* frontend:3000
+}
